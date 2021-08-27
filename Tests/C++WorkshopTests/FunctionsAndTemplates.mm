@@ -23,7 +23,11 @@
     
     // But, of course, it only works for `int`s.
     using namespace std::string_literals;
-    XCTAssertEqual(returnArgument("Test string"s), "Test string"s); // Compile error!
+//    XCTAssertEqual(returnArgument("Test string"s), "Test string"s); // Compile error!
+    
+    // An Objective-C method can handle this dynamically.
+    XCTAssertEqualObjects([ArgumentReturner returnArgumentWithObject:@1], @1);
+    XCTAssertEqualObjects([ArgumentReturner returnArgumentWithObject:@"Test string"], @"Test string");
 }
 
 @end
