@@ -27,3 +27,8 @@ auto returnArgument(int value) -> int {
 }
 
 @end
+
+template <typename P>
+auto returnArgument(P value) -> P {
+    return value;
+}

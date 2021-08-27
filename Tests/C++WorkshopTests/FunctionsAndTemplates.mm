@@ -30,10 +30,14 @@
     XCTAssertEqualObjects([ArgumentReturner returnArgumentWithObject:@"Test string"], @"Test string");
     
     // But the compiler can't check the types at all anymore! This fails, but not until runtime.
-    XCTAssertEqualObjects([ArgumentReturner returnArgumentWithObject:@1], @"Test string");
+//    XCTAssertEqualObjects([ArgumentReturner returnArgumentWithObject:@1], @"Test string");
     // The plain C++ function at least lets the compiler tell us ahead of time that an `int` and a `string` can't be
     // compared!
-    XCTAssertEqual(returnArgument(1), "Test string"s);
+//    XCTAssertEqual(returnArgument(1), "Test string"s);
+    
+    // Enter function templates! I've only written one template but by providing `string` as a template argument I can
+    // "stamp out" a version that works for `string`s.
+    XCTAssertEqual(returnArgument<std::string>("Test string"s), "Test string"s);
 }
 
 @end
