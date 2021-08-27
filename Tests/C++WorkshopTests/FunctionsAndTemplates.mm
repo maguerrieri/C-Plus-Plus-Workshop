@@ -42,6 +42,13 @@
     // I don't even need to explicitly provide the template arguments; in most cases the compiler can figure them out
     auto test_value = 10;
     XCTAssertEqual(returnArgument(&test_value), &test_value); // returnArgument<int*>(...)
+    
+    // Compare to an Objective-C block.
+    auto returnArgumentBlock = ^(int value) { return value; };
+    // The compiler figured out the return type, so this works fine
+    XCTAssertEqual(returnArgumentBlock(1), 1);
+    // ...and this fails to compile.
+    XCTAssertEqual(returnArgumentBlock(1), @"Test string");
 }
 
 @end
