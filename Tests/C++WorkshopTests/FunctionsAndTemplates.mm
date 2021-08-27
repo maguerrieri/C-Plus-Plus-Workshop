@@ -53,6 +53,13 @@
     // C++ lambdas work similarly, but even the parameter type can be inferred!
     auto return_argument_lambda = [](auto value) { return value; };
     XCTAssertEqual(return_argument_lambda(1), 1);
+    
+    // ...and since the return type is based on the parameter type, these all work.
+    XCTAssertEqual(return_argument_lambda("Test string"s), "Test string"s);
+    XCTAssertEqual(return_argument_lambda(&test_value), &test_value);
+    
+    // Effectively, the compiler has created a one-off function template for our lambda (it's actually an object with a
+    // template call operator, but we'll get to that later).
 }
 
 @end
