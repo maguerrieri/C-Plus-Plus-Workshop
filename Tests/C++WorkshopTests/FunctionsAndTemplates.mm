@@ -28,6 +28,9 @@
     // An Objective-C method can handle this dynamically.
     XCTAssertEqualObjects([ArgumentReturner returnArgumentWithObject:@1], @1);
     XCTAssertEqualObjects([ArgumentReturner returnArgumentWithObject:@"Test string"], @"Test string");
+    
+    // But the compiler can't check the types at all anymore! This fails, but not until runtime.
+    XCTAssertEqualObjects([ArgumentReturner returnArgumentWithObject:@1], @"Test string");
 }
 
 @end
