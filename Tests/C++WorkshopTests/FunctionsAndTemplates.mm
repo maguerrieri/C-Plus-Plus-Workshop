@@ -48,7 +48,11 @@
     // The compiler figured out the return type, so this works fine
     XCTAssertEqual(returnArgumentBlock(1), 1);
     // ...and this fails to compile.
-    XCTAssertEqual(returnArgumentBlock(1), @"Test string");
+//    XCTAssertEqual(returnArgumentBlock(1), @"Test string");
+    
+    // C++ lambdas work similarly, but even the parameter type can be inferred!
+    auto return_argument_lambda = [](auto value) { return value; };
+    XCTAssertEqual(return_argument_lambda(1), 1);
 }
 
 @end
