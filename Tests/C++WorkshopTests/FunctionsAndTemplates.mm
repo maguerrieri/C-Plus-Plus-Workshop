@@ -38,6 +38,10 @@
     // Enter function templates! I've only written one template but by providing `string` as a template argument I can
     // "stamp out" a version that works for `string`s.
     XCTAssertEqual(returnArgument<std::string>("Test string"s), "Test string"s);
+    
+    // I don't even need to explicitly provide the template arguments; in most cases the compiler can figure them out
+    auto test_value = 10;
+    XCTAssertEqual(returnArgument(&test_value), &test_value); // returnArgument<int*>(...)
 }
 
 @end
