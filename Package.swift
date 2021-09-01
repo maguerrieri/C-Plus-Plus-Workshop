@@ -10,6 +10,8 @@ let package = Package(
         .library(
             name: "C++Workshop",
             targets: ["C++Workshop"]),
+        .executable(name: "CardGameExe",
+                    targets: ["CardGameExe"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -18,6 +20,15 @@ let package = Package(
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        .target(
+            name: "CardGameExe",
+            dependencies: ["CardGame"],
+            publicHeadersPath: "."),
+        .target(
+            name: "CardGame",
+            dependencies: ["C++Workshop"],
+            publicHeadersPath: ".",
+            cxxSettings: [ .unsafeFlags(["-fmodules", "-fcxx-modules"]) ]),
         .target(
             name: "C++Workshop",
             dependencies: [],
