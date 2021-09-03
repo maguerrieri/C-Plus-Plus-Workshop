@@ -69,6 +69,18 @@
     auto some_string = "Test!"s;
     auto some_lambda = [some_string] { XCTAssertEqual(some_string, "Test!"s); };
     some_lambda();
+    
+    // Captures being explicit gives you some more options of what to capture. The default for capturing a variable
+    // (previous example) is by-value.
+    auto another_lambda = [&some_string] { some_string = "Not 'test!'!"; };
+    another_lambda(); // Since we captured a _reference_ to `some_string`, this has a side effect.
+    XCTAssertEqual(some_string, "Not 'test!'!"s);
+    
+    auto yet_another_lambda = [some_other_name_for_the_string = some_string] {
+        // Captured by value still, but bound to a new name.
+        XCTAssertEqual(some_other_name_for_the_string, "Test!"s);
+    };
+    yet_another_lambda();
 }
 
 @end
