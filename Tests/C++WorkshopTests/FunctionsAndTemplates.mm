@@ -60,6 +60,15 @@
     
     // Effectively, the compiler has created a one-off function template for our lambda (it's actually an object with a
     // template call operator, but we'll get to that later).
+    
+    // One last thing: Lambda value capture. Again effectively the same as in Objective-C, but a bit more explicit.
+    auto* someString = @"Test!";
+    auto someBlock = ^{ XCTAssertEqualObjects(someString, @"Test!"); };
+    someBlock();
+    
+    auto some_string = "Test!"s;
+    auto some_lambda = [some_string] { XCTAssertEqual(some_string, "Test!"s); };
+    some_lambda();
 }
 
 @end
