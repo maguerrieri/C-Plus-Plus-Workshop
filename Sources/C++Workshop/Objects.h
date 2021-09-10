@@ -7,7 +7,20 @@
 
 #pragma once
 
+#include <chrono>
+#include <cmath>
 #include <string>
+
+// These are in the standard library starting in C++20...
+namespace not_std_yet {
+namespace chrono {
+using years = std::chrono::duration<std::chrono::seconds::rep, std::ratio<31556952>>;
+}
+
+namespace numbers {
+constexpr double e = 2.71828182845904523536028747135266249775724709369995;
+}
+}
 
 // The only difference between structs and classes is that
 // structs' members are public by default and classes' are private.
@@ -24,6 +37,13 @@ public:
             throw std::runtime_error{"Invalid account parameters"};
         }
     }
+    
+    static constexpr auto rate = 0.05;
+    void update(not_std_yet::chrono::years delta) {
+        this->_balance.amount *= std::pow(not_std_yet::numbers::e, rate * delta.count());
+    }
+    
+    auto balance() -> const currency& { return this->_balance; };
     
 private:
     holder _holder;
