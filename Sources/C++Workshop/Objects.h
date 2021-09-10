@@ -62,6 +62,6 @@ public:
                     const currency& balance,
                     const interest_rate& rate): account{holder, balance}, _rate{rate} { }
     
-private:
+//private:
     interest_rate _rate;
 };

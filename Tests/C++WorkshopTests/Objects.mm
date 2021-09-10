@@ -41,6 +41,14 @@
     
     // We can add and change members
     auto another_savings = savings_account{{ .name = "Mario" }, { .amount = 1'000'000 }, { .rate = 0.1 }};
+    
+    // BUT because these objects are stored as values (not indirectly), we can't (safely) dynamically use the derived
+    // type in place of its base type; the compiler lets us do this assignment but anything in `savings` that isn't in
+    // an `account` has been "sliced" off.
+    account sliced_savings = another_savings;
+//    sliced_account._rate; // it's just an `account`, so this member doesn't exist!
+    XCTAssertEqual(sizeof(another_savings), 40);
+    XCTAssertEqual(sizeof(sliced_savings), 32); // the sliced object is 8 bytes smaller!
 }
 
 @end
