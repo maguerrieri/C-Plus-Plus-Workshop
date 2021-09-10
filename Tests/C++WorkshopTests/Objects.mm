@@ -37,7 +37,10 @@
     XCTAssertGreaterThan(another_account.balance().amount, 1'050'000);
     
     // Same for (public) inheritance
-    auto savings = savings_account{{ .name = "Mario" }, { .amount = 1'000'000 }};
+//    auto savings = savings_account{{ .name = "Mario" }, { .amount = 1'000'000 }, { .rate = 0.1 }};
+    
+    // We can add and change members
+    auto another_savings = savings_account{{ .name = "Mario" }, { .amount = 1'000'000 }, { .rate = 0.1 }};
 }
 
 @end

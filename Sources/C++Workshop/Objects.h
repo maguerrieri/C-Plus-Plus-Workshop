@@ -51,9 +51,17 @@ private:
 };
 
 class savings_account: public account {
+public:
+    struct interest_rate { double rate; };
+    
     // Constructors aren't inherited by default!
-    using account::account; // Doing this inherits _all_ of the base type's constructors
+//    using account::account; // Doing this inherits _all_ of the base type's constructors
     
     // An alternative is to _delegate_ to the base type's constructor
-    // savings_account(const holder& holder, const currency& balance): account{holder, balance} { }
+    savings_account(const holder& holder,
+                    const currency& balance,
+                    const interest_rate& rate): account{holder, balance}, _rate{rate} { }
+    
+private:
+    interest_rate _rate;
 };
