@@ -47,8 +47,19 @@
     // an `account` has been "sliced" off.
     account sliced_savings = another_savings;
 //    sliced_account._rate; // it's just an `account`, so this member doesn't exist!
-    XCTAssertEqual(sizeof(another_savings), 40);
-    XCTAssertEqual(sizeof(sliced_savings), 32); // the sliced object is 8 bytes smaller!
+//    XCTAssertEqual(sizeof(another_savings), 40);
+//    XCTAssertEqual(sizeof(sliced_savings), 32); // the sliced object is 8 bytes smaller!
+    
+    // If we want to use polymorphism, we need to reference our objects indirectly (more details on `shared_ptr` in the
+    // next session; it behaves generally like an Objective-C ARC strong pointer), and mark member functions as
+    // `virtual`.
+    std::shared_ptr<account> account_ptr;
+    account_ptr = std::make_shared<savings_account>(another_savings);
+    account_ptr->update(not_std_yet::chrono::years{1});
+    XCTAssertGreaterThan(account_ptr->balance().amount, 1'100'000); // Used the derived implementation!
+    
+    // Also important: if we might deallocate objects from a hierarchy via a base class pointer (like we have here),
+    // that class needs a `virtual` destructor!
 }
 
 @end

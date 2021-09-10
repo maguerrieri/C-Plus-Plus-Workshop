@@ -38,14 +38,16 @@ public:
         }
     }
     
+    virtual ~account() = default;
+    
     static constexpr auto rate = 0.05;
-    void update(not_std_yet::chrono::years delta) {
+    virtual void update(not_std_yet::chrono::years delta) {
         this->_balance.amount *= std::pow(not_std_yet::numbers::e, rate * delta.count());
     }
     
     auto balance() -> const currency& { return this->_balance; };
     
-private:
+protected:
     holder _holder;
     currency _balance;
 };
@@ -62,6 +64,10 @@ public:
                     const currency& balance,
                     const interest_rate& rate): account{holder, balance}, _rate{rate} { }
     
-//private:
+    void update(not_std_yet::chrono::years delta) override {
+        this->_balance.amount *= std::pow(not_std_yet::numbers::e, this->_rate.rate * delta.count());
+    }
+    
+private:
     interest_rate _rate;
 };
