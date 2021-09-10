@@ -22,14 +22,14 @@ struct Card {
     
     virtual auto card_type() const -> std::string { return "Gemmer"; }
     
-    Card(std::string name, int attack, int defense): /* YOUR CODE HERE */ { }
+    Card(std::string name, int attack, int defense): name{name}, attack{attack}, defense{defense} { }
     Card(const Card&) = default;
     
     auto operator ==(const Card& other) const { return this->name == other.name; }
     auto operator !=(const Card& other) const { return this->name != other.name; }
     
     /// @returns card's power; calculate power as: (player card's attack) - (opponent card's defense)/2
-    virtual auto power(const Card& opponent_card) const -> float { /* YOUR CODE HERE */ }
+    virtual auto power(const Card& opponent_card) const -> float { return this->attack - opponent_card.defense / 2; }
     
     /// Cards have no default effect.
     virtual void effect(Card& opponent_card, Player<Deck>& player, Player<Deck>& opponent) const { }
@@ -49,7 +49,13 @@ struct EngCard: public Card<Deck> {
     
     /// Discard the first 3 cards in the opponent's hand and have them draw the same number of cards from their deck.
     void effect(Card<Deck>& opponent_card, Player<Deck>& player, Player<Deck>& opponent) const override {
-        /* YOUR CODE HERE */
+        opponent.discard_first();
+        opponent.discard_first();
+        opponent.discard_first();
+        
+        opponent.draw();
+        opponent.draw();
+        opponent.draw();
     }
 };
 
@@ -62,7 +68,7 @@ struct QACard: public Card<Deck> {
     
     /// Swap the attack and defense of an opponent's card.
     void effect(Card<Deck>& opponent_card, Player<Deck>& player, Player<Deck>& opponent) const override {
-        /* YOUR CODE HERE */
+        std::swap(opponent_card.attack, opponent_card.defense);
     };
 };
 
@@ -76,7 +82,20 @@ struct PMCard: public Card<Deck> {
     /// Adds the attack and defense of the opponent's card to all cards in the player's deck, then removes all cards in
     /// the opponent's deck that share an attack or defense stat with the opponent's card.
     void effect(Card<Deck>& opponent_card, Player<Deck>& player, Player<Deck>& opponent) const override {
-        /* YOUR CODE HERE */
+        for (auto& card : player.deck()) {
+            card.get().attack += opponent_card.attack;
+            card.get().defense += opponent_card.defense;
+        }
+        
+        auto& opponent_deck = opponent.deck();
+        for (auto it = opponent_deck.begin(); it != opponent_deck.end(); it ++) {
+            auto& other_card = (*it).get();
+            if (other_card.attack == opponent_card.attack
+                || other_card.defense == opponent_card.defense) {
+                opponent_deck.erase(it);
+                it --;
+            }
+        }
     };
 };
 
@@ -97,8 +116,8 @@ public:
     };
     
     /// A Player starts the game by drawing 5 cards from their deck.
-    Player(std::string name, Deck& deck): /* YOUR CODE HERE */ {
-        /* YOUR CODE HERE */
+    Player(std::string name, Deck& deck): _name{name}, _deck{deck}, _hand{} {
+        for (auto i = 0; i < 5; i ++) { this->draw(); }
     }
     
     const auto& hand() { return this->_hand; }
@@ -108,7 +127,7 @@ public:
     void draw() {
         if (this->_deck.empty()) { throw DrawException{*this}; }
         
-        /* YOUR CODE HERE */
+        this->_hand.emplace_back(this->_deck.draw());
     }
     
     void discard_first() {
@@ -119,7 +138,9 @@ public:
     
     /// Remove and return a card from the player's hand at the given index.
     auto play(HandIndex index) -> Card<Deck>& {
-        /* YOUR CODE HERE */
+        auto& card = this->_hand.at(index).get();
+        this->_hand.erase(this->_hand.begin() + index);
+        return card;
     }
     
     /// Play a random card.
