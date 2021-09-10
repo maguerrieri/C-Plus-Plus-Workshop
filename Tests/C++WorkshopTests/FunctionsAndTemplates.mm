@@ -78,7 +78,7 @@
     
     auto yet_another_lambda = [some_other_name_for_the_string = some_string] {
         // Captured by value still, but bound to a new name.
-        XCTAssertEqual(some_other_name_for_the_string, "Test!"s);
+        XCTAssertEqual(some_other_name_for_the_string, "Not 'test!'!"s);
     };
     yet_another_lambda();
 }
