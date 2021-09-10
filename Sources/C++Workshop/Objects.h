@@ -7,4 +7,11 @@
 
 #pragma once
 
-class account {};
+#include <string>
+
+// The only difference between structs and classes is that
+// structs' members are public by default and classes' are private.
+struct account {
+    std::string holder_name;
+    double balance;
+};
