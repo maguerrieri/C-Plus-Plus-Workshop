@@ -49,3 +49,11 @@ private:
     holder _holder;
     currency _balance;
 };
+
+class savings_account: public account {
+    // Constructors aren't inherited by default!
+    using account::account; // Doing this inherits _all_ of the base type's constructors
+    
+    // An alternative is to _delegate_ to the base type's constructor
+    // savings_account(const holder& holder, const currency& balance): account{holder, balance} { }
+};

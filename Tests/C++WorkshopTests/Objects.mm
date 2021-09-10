@@ -35,6 +35,9 @@
     auto another_account = account{{ .name = "Mario" }, { .amount = 1'000'000 }};
     another_account.update(not_std_yet::chrono::years{1});
     XCTAssertGreaterThan(another_account.balance().amount, 1'050'000);
+    
+    // Same for (public) inheritance
+    auto savings = savings_account{{ .name = "Mario" }, { .amount = 1'000'000 }};
 }
 
 @end
