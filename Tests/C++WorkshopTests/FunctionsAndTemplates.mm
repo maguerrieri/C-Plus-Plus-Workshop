@@ -81,6 +81,17 @@
         XCTAssertEqual(some_other_name_for_the_string, "Not 'test!'!"s);
     };
     yet_another_lambda();
+    
+    // One more note: capturing pointers is _non-owning_! This is consistent with C++ in general, but might be
+    // surprising coming from Objective-C with ARC.
+    std::function<void()> captures_dangling_pointer;
+    {
+        auto will_be_destroyed = 10;
+        captures_dangling_pointer = [will_dangle = &will_be_destroyed] { XCTAssertEqual(*will_dangle, 10); };
+    }
+    // `will_be_destroyed` is now out of scope
+    captures_dangling_pointer(); // Undefined behavior! In a program this simple the assert will likely still pass,
+                                 // but this code is incorrect.
 }
 
 @end
