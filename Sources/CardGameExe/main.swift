@@ -8,5 +8,6 @@
 import Foundation
 
 import CardGame
+import CardGameSwift
 
-exit(CardGame.play())
+exit(CardGame.play(withCards: try! loadCards()))

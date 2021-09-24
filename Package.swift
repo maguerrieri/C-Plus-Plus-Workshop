@@ -22,13 +22,15 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "CardGameExe",
-            dependencies: ["CardGame"],
+            dependencies: [ "CardGame" ],
             publicHeadersPath: "."),
         .target(
             name: "CardGame",
-            dependencies: ["C++Workshop"],
+            dependencies: [ "C++Workshop", "CardGameSwift" ],
+            resources: [ .process("cards.json") ],
             publicHeadersPath: ".",
             cxxSettings: [ .unsafeFlags(["-fmodules", "-fcxx-modules"]) ]),
+        .target(name: "CardGameSwift"),
         .target(
             name: "C++Workshop",
             dependencies: [],

@@ -11,6 +11,6 @@
 
 @interface CardGame: NSObject
 
-+ (int)play;
++ (int)playWithCards:(id)cards;
 
 @end

@@ -11,6 +11,7 @@
 @import std.optional;
 
 @import C__Workshop;
+@import CardGameSwift;
 
 constexpr auto WELCOME_MESSAGE = "Welcome to Magic: The Lambda-ing!\n"
                                  "\n"
@@ -141,7 +142,7 @@ public:
 
 @implementation CardGame
 
-+ (int)play {
++ (int)playWithCards:(Cards *)cards {
     std::cout << "What is your name? > ";
     
     std::string name;

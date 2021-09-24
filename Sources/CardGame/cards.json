@@ -1,0 +1,10 @@
+{
+    "name": "test",
+    "cards": [
+        {
+            "name": "test",
+            "attack": 10,
+            "defense": 10
+        }
+    ]
+}

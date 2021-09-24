@@ -40,6 +40,11 @@ auto fletch = QACard<RandomDeck>{"Fletch, Game Breaker", 9999, 9999};
 auto eitan = PMCard<RandomDeck>{"Eitan, Hakuna Matataer", 9944, 5552};
 auto haerin = PMCard<RandomDeck>{"Haerin, COVID Chef", 2298, 4594};
 
-auto standard_deck = RandomDeck{{ mario, ken, steven, adrian, aleks, cindy, fletch, eitan, haerin }};
+auto standard_deck = RandomDeck{{
+    mario, ken, steven, adrian, aleks, cindy, fletch, eitan, haerin,
+    mario, ken, steven, adrian, aleks, cindy, fletch, eitan, haerin,
+    mario, ken, steven, adrian, aleks, cindy, fletch, eitan, haerin,
+    mario, ken, steven, adrian, aleks, cindy, fletch, eitan, haerin,
+}};
 auto player_deck = RandomDeck{standard_deck};
 auto opponent_deck = RandomDeck{standard_deck};
