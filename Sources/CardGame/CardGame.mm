@@ -140,13 +140,20 @@ public:
     }
 };
 
+using LoadedCards = std::vector<Card<RandomDeck>>;
+auto load_cards(Cards *cards) -> std::tuple<RandomDeck, LoadedCards> {
+    
+}
+
 @implementation CardGame
 
 + (int)playWithCards:(Cards *)cards {
     std::cout << "What is your name? > ";
     
-    std::string name;
+    auto name = std::string{};
     std::cin >> name;
+    
+    auto [standard_deck, loaded_cards] = load_cards(cards);
     
     auto player = Player<RandomDeck>{name, player_deck};
     auto opponent = Player<RandomDeck>{"Opponent", opponent_deck};
@@ -167,7 +174,7 @@ public:
             
             std::cout << player.hand_display();
             
-            Player<RandomDeck>::HandIndex card_index;
+            auto card_index = Player<RandomDeck>::HandIndex{};
             std::cin >> card_index;
             std::cout << duel.play_round(player.play(card_index - 1), opponent.play());
             std::cout << duel.scores();
