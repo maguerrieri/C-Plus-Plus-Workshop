@@ -31,6 +31,10 @@ template <typename T>
 struct range {
     typename T::size_type start;
     typename T::size_type end;
+    
+    auto length() {
+        return this->end - this->start;
+    }
 };
 enum class search_mode {
     none,
