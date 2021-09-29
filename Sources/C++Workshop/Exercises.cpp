@@ -25,6 +25,7 @@ auto majority_element(const std::vector<int>& votes) -> std::optional<int> {
 
 auto subvector_sum(const std::vector<int>& vector, int target) -> std::vector<std::vector<int>> {
     return {}; // YOUR CODE HERE
+auto subvector_sum(const std::vector<int>& vector, int target) -> subvector_sum_return_t {
 }
 
 auto substring_range(const std::string& to_search,
