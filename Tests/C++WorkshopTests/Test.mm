@@ -26,24 +26,24 @@
 
 - (void)testSubVector {
     XCTAssertEqual(subvector_sum({ 2, 7, 11, 15 }, 9),
-                   (std::vector<std::vector<int>>{
+                   (subvector_sum_return_t{
         { 2, 7 },
     }));
     
     XCTAssertEqual(subvector_sum({ 2, 7, 11, -2 }, 9),
-                   (std::vector<std::vector<int>>{
+                   (subvector_sum_return_t{
         { 2, 7 },
         { 11, -2 },
     }));
     
     XCTAssertEqual(subvector_sum({ 4, 2, -3, -1, 0, 4 }, 0),
-                   (std::vector<std::vector<int>>{
+                   (subvector_sum_return_t{
         { -3, -1, 0, 4 },
         { 0 },
     }));
     
     XCTAssertEqual(subvector_sum({ 3, 4, -7, 3, 1, 3, 1, -4, -2, -2 }, 0),
-                   (std::vector<std::vector<int>>{
+                   (subvector_sum_return_t{
         { 3, 4, -7 },
         { 4, -7, 3 },
         { -7, 3, 1, 3 },

@@ -9,10 +9,23 @@
 
 #include <optional>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 auto majority_element(const std::vector<int>& votes) -> std::optional<int>;
-auto subvector_sum(const std::vector<int>& vector, int target) -> std::vector<std::vector<int>>;
+
+struct vector_hash {
+    // https://stackoverflow.com/a/27216842/2205941
+    auto operator()(std::vector<int> vector) const -> size_t {
+        auto ret = std::size_t{0};
+        for(auto& i : vector) {
+            ret ^= std::hash<uint32_t>()(i);
+        }
+        return ret;
+    }
+};
+using subvector_sum_return_t = std::unordered_set<std::vector<int>, vector_hash>;
+auto subvector_sum(const std::vector<int>& vector, int target) -> subvector_sum_return_t;
 
 template <typename T>
 struct range {

@@ -7,6 +7,18 @@
 
 #include "Exercises.h"
 
+#include <iostream>
+
+template <typename T>
+auto operator<<(std::ostream& os, const std::vector<T>& vector) -> std::ostream& {
+    os << "[";
+    for (const auto& element : vector) {
+        os << element << ", ";
+    }
+    os << "]";
+    return os;
+}
+
 auto majority_element(const std::vector<int>& votes) -> std::optional<int> {
     return {}; // YOUR CODE HERE
 }
