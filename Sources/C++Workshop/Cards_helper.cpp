@@ -12,7 +12,7 @@
 
 #include "Cards.h"
 
-auto RandomDeck::draw() -> Card<RandomDeck>& {
+auto RandomDeck::draw() -> Card<RandomDeck> {
     assert(!this->_cards.empty());
     
     auto uniform_distribution = std::uniform_int_distribution<size_type>{0, this->_cards.size() - 1};

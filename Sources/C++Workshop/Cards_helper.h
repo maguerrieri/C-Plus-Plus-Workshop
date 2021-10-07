@@ -14,7 +14,7 @@ template <typename Deck> class Card;
 template <typename Impl>
 class Deck {
 protected:
-    using Cards = std::vector<std::reference_wrapper<Card<Impl>>>;
+    using Cards = std::vector<Card<Impl>>;
     Cards _cards;
     
 public:
@@ -36,6 +36,8 @@ public:
 
 class RandomDeck: Deck<RandomDeck> {
 public:
+    using Deck::Cards;
+    
     using Deck::Deck;
     using Deck::empty;
     using Deck::size;
@@ -44,5 +46,5 @@ public:
     using Deck::begin;
     using Deck::end;
     
-    auto draw() -> Card<RandomDeck>&;
+    auto draw() -> Card<RandomDeck>;
 };

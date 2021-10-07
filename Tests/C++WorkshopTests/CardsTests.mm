@@ -25,7 +25,7 @@ public:
     using Super::begin;
     using Super::end;
     
-    auto draw() -> Card<Deck>& {
+    auto draw() -> Card<Deck> {
         auto card = this->_cards.front();
         this->_cards.erase(this->_cards.begin());
         return card;
@@ -161,8 +161,8 @@ auto test_deck(std::vector<Test::Card>& cards) {
     auto player2 = Test::Player{"p2", opponent_deck};
     pm_test.effect(opponent_card, player1, player2);
     for (auto& card : player1.deck()) {
-        XCTAssertEqual(card.get().attack, 600);
-        XCTAssertEqual(card.get().defense, 600);
+        XCTAssertEqual(card.attack, 600);
+        XCTAssertEqual(card.defense, 600);
     }
     XCTAssertEqual(player2.deck().size(), 0);
 }

@@ -140,9 +140,22 @@ public:
     }
 };
 
+template <typename Card>
+class card_factory {
+    
+};
+
+auto make_card(CardInfo *card) {
+    
+}
+
 using LoadedCards = std::vector<Card<RandomDeck>>;
 auto load_cards(Cards *cards) -> std::tuple<RandomDeck, LoadedCards> {
-    return {{{}}, {}};
+    auto loaded_cards = RandomDeck::Cards{};
+    for (CardInfo *card in cards.cards) {
+        loaded_cards.emplace_back(make_card(card));
+    }
+    return {RandomDeck{loaded_cards}, loaded_cards};
 }
 
 @implementation CardGame
