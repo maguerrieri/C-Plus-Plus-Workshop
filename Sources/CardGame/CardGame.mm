@@ -142,7 +142,7 @@ public:
 
 using LoadedCards = std::vector<Card<RandomDeck>>;
 auto load_cards(Cards *cards) -> std::tuple<RandomDeck, LoadedCards> {
-    
+    return {{{}}, {}};
 }
 
 @implementation CardGame
@@ -155,11 +155,13 @@ auto load_cards(Cards *cards) -> std::tuple<RandomDeck, LoadedCards> {
     
     auto [standard_deck, loaded_cards] = load_cards(cards);
     
+    auto player_deck = RandomDeck{{}};
     auto player = Player<RandomDeck>{name, player_deck};
+    auto opponent_deck = RandomDeck{{}};
     auto opponent = Player<RandomDeck>{"Opponent", opponent_deck};
-    
+
     std::cout << WELCOME_MESSAGE;
-    
+
     auto duel = Game{player, opponent};
     while (true) {
         auto winner = duel.winner();
@@ -167,13 +169,13 @@ auto load_cards(Cards *cards) -> std::tuple<RandomDeck, LoadedCards> {
             std::cout << (*winner).get().name() << " wins!\n";
             break;
         }
-        
+
         try {
             player.draw();
             opponent.draw();
-            
+
             std::cout << player.hand_display();
-            
+
             auto card_index = Player<RandomDeck>::HandIndex{};
             std::cin >> card_index;
             std::cout << duel.play_round(player.play(card_index - 1), opponent.play());

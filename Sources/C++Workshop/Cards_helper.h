@@ -46,7 +46,3 @@ public:
     
     auto draw() -> Card<RandomDeck>&;
 };
-
-extern RandomDeck standard_deck;
-extern RandomDeck player_deck;
-extern RandomDeck opponent_deck;

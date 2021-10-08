@@ -2,9 +2,49 @@
     "name": "test",
     "cards": [
         {
-            "name": "test",
-            "attack": 10,
-            "defense": 10
-        }
+            "name": "Mario, Techpriest Enginseer",
+            "attack": 1337,
+            "defense": 1003
+        },
+        {
+            "name": "Ken, Code Contortionist",
+            "attack": 7544,
+            "defense": 2382
+        },
+        {
+            "name": "Steven, Code Monkey",
+            "attack": 2352,
+            "defense": 23425
+        },
+        {
+            "name": "Adrian, Noodle Soup Eater",
+            "attack": 1803,
+            "defense": 2229
+        },
+        {
+            "name": "Aleks, Missing From The Team Page",
+            "attack": 3243,
+            "defense": 6271
+        },
+        {
+            "name": "Cindy, Off-World Colonies Replicant Representative",
+            "attack": 7053,
+            "defense": 4572
+        },
+        {
+            "name": "Fletch, Game Breaker",
+            "attack": 9999,
+            "defense": 9999
+        },
+        {
+            "name": "Eitan, Hakuna Matataer",
+            "attack": 9944,
+            "defense": 5552
+        },
+        {
+            "name": "Haerin, COVID Chef",
+            "attack": 2298,
+            "defense": 4594
+        },
     ]
 }
