@@ -167,4 +167,22 @@ auto test_deck(std::vector<Test::Card>& cards) {
     XCTAssertEqual(player2.deck().size(), 0);
 }
 
+- (void)testCardAliasing {
+    auto player_deck = Test::standard_deck;
+    auto opponent_deck = Test::standard_deck;
+    
+    auto player1 = Test::Player{"p1", player_deck};
+    auto player2 = Test::Player{"p2", opponent_deck};
+    
+    auto& opponent_top_card = opponent_deck.at(0).get();
+    auto start_attack = opponent_top_card.attack;
+    auto start_defense = opponent_top_card.defense;
+    
+    auto test_card = Test::PMCard{"Product manager", 500, 500};
+    test_card.effect(opponent_deck.draw(), player1, player2);
+    
+    XCTAssertEqual(opponent_top_card.attack, start_attack);
+    XCTAssertEqual(opponent_top_card.defense, start_defense);
+}
+
 @end
