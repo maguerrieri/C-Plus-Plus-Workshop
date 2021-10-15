@@ -83,15 +83,15 @@ struct PMCard: public Card<Deck> {
     /// the opponent's deck that share an attack or defense stat with the opponent's card.
     void effect(Card<Deck>& opponent_card, Player<Deck>& player, Player<Deck>& opponent) const override {
         for (auto& card : player.deck()) {
-            card.attack += opponent_card.attack;
-            card.defense += opponent_card.defense;
+            card->attack += opponent_card.attack;
+            card->defense += opponent_card.defense;
         }
         
         auto& opponent_deck = opponent.deck();
         for (auto it = opponent_deck.begin(); it != opponent_deck.end(); it ++) {
             auto& other_card = (*it);
-            if (other_card.attack == opponent_card.attack
-                || other_card.defense == opponent_card.defense) {
+            if (other_card->attack == opponent_card.attack
+                || other_card->defense == opponent_card.defense) {
                 opponent_deck.erase(it);
                 it --;
             }
@@ -101,7 +101,7 @@ struct PMCard: public Card<Deck> {
 
 template <typename Deck>
 class Player {
-    using Hand = std::vector<Card<Deck>>;
+    using Hand = std::vector<std::unique_ptr<Card<Deck>>>;
     
     std::string _name;
     Deck& _deck;
@@ -137,14 +137,14 @@ public:
     using HandIndex = typename Hand::size_type;
     
     /// Remove and return a card from the player's hand at the given index.
-    auto play(HandIndex index) -> Card<Deck>& {
-        auto& card = this->_hand.at(index);
+    auto play(HandIndex index) -> std::unique_ptr<Card<Deck>> {
+        auto card = std::move(this->_hand.at(index));
         this->_hand.erase(this->_hand.begin() + index);
         return card;
     }
     
     /// Play a random card.
-    auto play() -> Card<Deck>& {
+    auto play() -> std::unique_ptr<Card<Deck>> {
         auto uniform_distribution = std::uniform_int_distribution<HandIndex>{0, this->hand().size() - 1};
         auto generator = std::mt19937{std::random_device{}()};
 
@@ -152,7 +152,7 @@ public:
     }
     
     struct HandDisplay {
-        Hand hand;
+        const Hand& hand;
         
         friend auto operator<<(std::ostream& os,
                                const typename Player<Deck>::HandDisplay& handDisplay) -> std::ostream& {

@@ -25,8 +25,8 @@ public:
     using Super::begin;
     using Super::end;
     
-    auto draw() -> Card<Deck> {
-        auto card = this->_cards.front();
+    auto draw() -> Cards::value_type {
+        auto card = std::move(this->_cards.front());
         this->_cards.erase(this->_cards.begin());
         return card;
     };
@@ -53,7 +53,15 @@ auto eitan = PMCard{"Eitan, Hakuna Matataer", 9944, 5552};
 auto haerin = PMCard{"Haerin, COVID Chef", 2298, 4594};
 auto wen = PMCard{"Wen, Global Nomad", 427, 4140};
 
-auto standard_deck = Deck{{ mario, ken, steven, adrian, aleks, cindy, fletch, eitan, haerin }};
+auto make_unique(std::vector<Card> cards) {
+    auto out = std::vector<std::unique_ptr<Card>>{};
+    std::transform(cards.begin(), cards.end(), std::back_inserter(out), [](auto card) {
+        return std::make_unique<Card>(card);
+    });
+    return out;
+}
+
+auto standard_deck = Deck{make_unique({mario, ken, steven, adrian, aleks, cindy, fletch, eitan, haerin})};
 auto player_deck = Deck{standard_deck};
 auto opponent_deck = Deck{standard_deck};
 
@@ -64,9 +72,17 @@ void reset_deck(Deck& deck) { deck = Deck{standard_deck}; }
 auto test_deck(std::vector<Test::Card>& cards) {
     auto card_references = Test::Deck::Cards{};
     std::transform(cards.begin(), cards.end(), std::back_inserter(card_references), [](auto& card) {
-        return decltype(card_references)::value_type{card};
+        return std::make_unique<Test::Card>(card);
     });
-    return Test::Deck{card_references};
+    return Test::Deck{std::move(card_references)};
+}
+
+auto test_deck(const Test::Card& card) {
+    auto test_cards = Test::Deck::Cards{};
+    std::generate_n(std::back_inserter(test_cards),
+                    6,
+                    [&card] { return std::make_unique<Test::Card>(card); });
+    return Test::Deck{std::move(test_cards)};
 }
 
 @implementation Cards
@@ -102,7 +118,7 @@ auto test_deck(std::vector<Test::Card>& cards) {
 
 - (void)testPlayerConstructor {
     auto test_card = Test::Card{"test", 100, 100};
-    auto test_deck = Test::Deck{Test::Deck::Cards(6, test_card)};
+    auto test_deck = ::test_deck(test_card);
     auto test_player = Player{"tester", test_deck};
     XCTAssertEqual(test_deck.size(), 1);
     XCTAssertEqual(test_player.hand().size(), 5);
@@ -110,7 +126,7 @@ auto test_deck(std::vector<Test::Card>& cards) {
 
 - (void)testPlayerDraw {
     auto test_card = Test::Card{"test", 100, 100};
-    auto test_deck = Test::Deck{Test::Deck::Cards(6, test_card)};
+    auto test_deck = ::test_deck(test_card);
     auto test_player = Test::Player{"tester", test_deck};
     test_player.draw();
     XCTAssertEqual(test_deck.size(), 0);
@@ -118,10 +134,10 @@ auto test_deck(std::vector<Test::Card>& cards) {
 }
 
 - (void)testPlayerPlay {
-    auto test_deck = Test::Deck{{Test::cindy, Test::fletch, Test::eitan, Test::haerin, Test::wen}};
+    auto test_deck = Test::Deck{Test::make_unique({Test::cindy, Test::fletch, Test::eitan, Test::haerin, Test::wen})};
     auto test_player = Test::Player{"tester", test_deck};
-    XCTAssertEqual(test_player.play(0), Test::cindy);
-    XCTAssertEqual(test_player.play(0), Test::fletch);
+    XCTAssertEqual(*test_player.play(0), Test::cindy);
+    XCTAssertEqual(*test_player.play(0), Test::fletch);
     XCTAssertEqual(test_player.hand().size(), 3);
 }
 
@@ -161,8 +177,8 @@ auto test_deck(std::vector<Test::Card>& cards) {
     auto player2 = Test::Player{"p2", opponent_deck};
     pm_test.effect(opponent_card, player1, player2);
     for (auto& card : player1.deck()) {
-        XCTAssertEqual(card.attack, 600);
-        XCTAssertEqual(card.defense, 600);
+        XCTAssertEqual(card->attack, 600);
+        XCTAssertEqual(card->defense, 600);
     }
     XCTAssertEqual(player2.deck().size(), 0);
 }
@@ -174,15 +190,16 @@ auto test_deck(std::vector<Test::Card>& cards) {
     auto player1 = Test::Player{"p1", player_deck};
     auto player2 = Test::Player{"p2", opponent_deck};
     
-    auto& opponent_top_card = opponent_deck.at(0).get();
-    auto start_attack = opponent_top_card.attack;
-    auto start_defense = opponent_top_card.defense;
+    const auto& opponent_top_card = opponent_deck.at(0);
+    auto start_attack = opponent_top_card->attack;
+    auto start_defense = opponent_top_card->defense;
     
     auto test_card = Test::PMCard{"Product manager", 500, 500};
-    test_card.effect(opponent_deck.draw(), player1, player2);
+    auto drawn_opponent_card = opponent_deck.draw();
+    test_card.effect(*drawn_opponent_card.get(), player1, player2);
     
-    XCTAssertEqual(opponent_top_card.attack, start_attack);
-    XCTAssertEqual(opponent_top_card.defense, start_defense);
+    XCTAssertEqual(opponent_top_card->attack, start_attack);
+    XCTAssertEqual(opponent_top_card->defense, start_defense);
 }
 
 @end
