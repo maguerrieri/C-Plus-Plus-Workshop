@@ -3,46 +3,55 @@
     "cards": [
         {
             "name": "Mario, Techpriest Enginseer",
+            "type": "eng",
             "attack": 1337,
             "defense": 1003
         },
         {
             "name": "Ken, Code Contortionist",
+            "type": "eng",
             "attack": 7544,
             "defense": 2382
         },
         {
             "name": "Steven, Code Monkey",
+            "type": "eng",
             "attack": 2352,
             "defense": 23425
         },
         {
             "name": "Adrian, Noodle Soup Eater",
+            "type": "eng",
             "attack": 1803,
             "defense": 2229
         },
         {
             "name": "Aleks, Missing From The Team Page",
+            "type": "eng",
             "attack": 3243,
             "defense": 6271
         },
         {
             "name": "Cindy, Off-World Colonies Replicant Representative",
+            "type": "qa",
             "attack": 7053,
             "defense": 4572
         },
         {
             "name": "Fletch, Game Breaker",
+            "type": "qa",
             "attack": 9999,
             "defense": 9999
         },
         {
             "name": "Eitan, Hakuna Matataer",
+            "type": "pm",
             "attack": 9944,
             "defense": 5552
         },
         {
             "name": "Haerin, COVID Chef",
+            "type": "pm",
             "attack": 2298,
             "defense": 4594
         },

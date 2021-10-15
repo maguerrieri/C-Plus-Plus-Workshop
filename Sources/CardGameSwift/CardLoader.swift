@@ -10,6 +10,7 @@ import Foundation
 @objc
 public class CardInfo: NSObject, Codable {
     @objc public let name: String
+    @objc public let type: String
     @objc public let attack: Int
     @objc public let defense: Int
 }
