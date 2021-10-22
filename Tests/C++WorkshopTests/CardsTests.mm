@@ -190,16 +190,16 @@ auto test_deck(const Test::Card& card) {
     auto player1 = Test::Player{"p1", player_deck};
     auto player2 = Test::Player{"p2", opponent_deck};
     
-    const auto& opponent_top_card = opponent_deck.at(0);
-    auto start_attack = opponent_top_card->attack;
-    auto start_defense = opponent_top_card->defense;
+    const auto& opponent_top_card = *opponent_deck.at(0);
+    auto start_attack = opponent_top_card.attack;
+    auto start_defense = opponent_top_card.defense;
     
     auto test_card = Test::PMCard{"Product manager", 500, 500};
     auto drawn_opponent_card = opponent_deck.draw();
     test_card.effect(*drawn_opponent_card.get(), player1, player2);
     
-    XCTAssertEqual(opponent_top_card->attack, start_attack);
-    XCTAssertEqual(opponent_top_card->defense, start_defense);
+    XCTAssertEqual(opponent_top_card.attack, start_attack);
+    XCTAssertEqual(opponent_top_card.defense, start_defense);
 }
 
 @end
