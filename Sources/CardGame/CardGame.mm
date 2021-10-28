@@ -172,9 +172,9 @@ auto load_cards(Cards *cards) -> std::tuple<RandomDeck, LoadedCards> {
     
     auto [standard_deck, loaded_cards] = load_cards(cards);
     
-    auto player_deck = RandomDeck{{}};
+    auto player_deck = RandomDeck{standard_deck};
     auto player = Player<RandomDeck>{name, player_deck};
-    auto opponent_deck = RandomDeck{{}};
+    auto opponent_deck = RandomDeck{standard_deck};
     auto opponent = Player<RandomDeck>{"Opponent", opponent_deck};
 
     std::cout << WELCOME_MESSAGE;
