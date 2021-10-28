@@ -158,7 +158,7 @@ public:
                                const typename Player<Deck>::HandDisplay& handDisplay) -> std::ostream& {
             os << "Your hand: \n";
             for (auto i = 0; i < handDisplay.hand.size(); i ++) {
-                os << i + 1 << ": " << handDisplay.hand.at(i) << "\n";
+                os << i + 1 << ": " << *(handDisplay.hand.at(i)) << "\n";
             }
             return os;
         }
