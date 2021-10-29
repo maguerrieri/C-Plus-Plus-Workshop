@@ -20,9 +20,14 @@
 
 - (void)testExceptions {
     try {
-        test(); // Exception still thrown, and...
-    } catch (const std::runtime_error& error) {
-        std::cout << "Caught '" << error.what() << "'!\n"; // we can get information about the error out of the exception object.
+        auto val = 0; // Aside: since the `try` block is a scope, keeping `val` inside it helps avoid leaking
+                      //        potentially invalid state in the case of an exception
+        std::cout << "Enter a number > ";
+        std::cin >> val;
+        test(val);
+    } catch (const std::exception& error) {
+        // We're catching both exception types here, since they both derive from `std::exception`.
+        std::cout << "Caught '" << error.what() << "'!\n";
     }
 }
 
