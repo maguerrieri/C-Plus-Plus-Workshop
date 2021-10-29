@@ -25,9 +25,12 @@
         std::cout << "Enter a number > ";
         std::cin >> val;
         test(val);
-    } catch (const std::exception& error) {
-        // We're catching both exception types here, since they both derive from `std::exception`.
-        std::cout << "Caught '" << error.what() << "'!\n";
+    } catch (const greater_than_ten_error& error) {
+        // Since we caught this specific type of error, we can access its members.
+        std::cout << "Caught '" << error.what() << "' with greater value '" << error.greater_value << "'!\n";
+    } catch (const less_than_or_equal_to_ten_error& error) {
+        // And same for this one.
+        std::cout << "Caught '" << error.what() << "' with lesser value '" << error.lesser_value << "'!\n";
     }
 }
 
