@@ -140,9 +140,26 @@ public:
     }
 };
 
-using LoadedCards = std::vector<Card<RandomDeck>>;
+using LoadedCards = RandomDeck::Cards;
 auto load_cards(Cards *cards) -> std::tuple<RandomDeck, LoadedCards> {
-    return {{{}}, {}};
+    auto loaded_cards = RandomDeck::Cards{};
+    for (CardInfo *card in cards.cards) {
+        if ([card.type isEqualToString:@"eng"]) {
+            loaded_cards.emplace_back(std::make_unique<EngCard<RandomDeck>>(std::string{card.name.UTF8String},
+                                                                            card.attack,
+                                                                            card.defense));
+        } else if ([card.type isEqualToString:@"qa"]) {
+            loaded_cards.emplace_back(std::make_unique<QACard<RandomDeck>>(std::string{card.name.UTF8String},
+                                                                           card.attack,
+                                                                           card.defense));
+        } else if ([card.type isEqualToString:@"pm"]) {
+            loaded_cards.emplace_back(std::make_unique<PMCard<RandomDeck>>(std::string{card.name.UTF8String},
+                                                                           card.attack,
+                                                                           card.defense));
+        }
+    }
+    auto deck = RandomDeck{loaded_cards};
+    return {deck, std::move(loaded_cards)};
 }
 
 @implementation CardGame
@@ -155,9 +172,9 @@ auto load_cards(Cards *cards) -> std::tuple<RandomDeck, LoadedCards> {
     
     auto [standard_deck, loaded_cards] = load_cards(cards);
     
-    auto player_deck = RandomDeck{{}};
+    auto player_deck = RandomDeck{standard_deck};
     auto player = Player<RandomDeck>{name, player_deck};
-    auto opponent_deck = RandomDeck{{}};
+    auto opponent_deck = RandomDeck{standard_deck};
     auto opponent = Player<RandomDeck>{"Opponent", opponent_deck};
 
     std::cout << WELCOME_MESSAGE;
@@ -178,7 +195,9 @@ auto load_cards(Cards *cards) -> std::tuple<RandomDeck, LoadedCards> {
 
             auto card_index = Player<RandomDeck>::HandIndex{};
             std::cin >> card_index;
-            std::cout << duel.play_round(player.play(card_index - 1), opponent.play());
+            auto player_card = player.play(card_index - 1);
+            auto opponent_card = opponent.play();
+            std::cout << duel.play_round(*player_card, *opponent_card);
             std::cout << duel.scores();
         } catch (const Player<RandomDeck>::DrawException& drawException) {
             std::cout << drawException.player.name() << " is out of cards. They lose!\n";
