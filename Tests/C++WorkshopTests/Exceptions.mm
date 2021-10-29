@@ -19,9 +19,13 @@
 @implementation ExceptionsTests
 
 - (void)testExceptions {
+    auto val = 0;
     try {
-        test();
-    } catch (const std::runtime_error& error) {
+        std::cout << "Enter a number > ";
+        std::cin >> val;
+        test(val);
+    } catch (const std::exception& error) {
+        // We're catching both exception types here, since they both derive from `std::exception`.
         std::cout << "Caught '" << error.what() << "'!\n";
     }
 }
