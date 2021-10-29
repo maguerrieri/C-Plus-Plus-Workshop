@@ -10,6 +10,7 @@
 @import C__Workshop;
 
 @import std.iostream;
+@import std.stdexcept;
 
 @interface ExceptionsTests: XCTestCase
 
@@ -20,8 +21,8 @@
 - (void)testExceptions {
     try {
         test();
-    } catch (const std::exception&) {
-        std::cout << "Caught!\n";
+    } catch (const std::runtime_error& error) {
+        std::cout << "Caught '" << error.what() << "'!\n";
     }
 }
 
