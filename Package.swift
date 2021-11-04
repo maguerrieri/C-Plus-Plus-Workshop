@@ -23,9 +23,14 @@ let package = Package(
             dependencies: [],
             publicHeadersPath: ".",
             cxxSettings: [ .unsafeFlags(["-fmodules", "-fcxx-modules"]) ]),
+        .target(
+            name: "cf",
+            dependencies: [],
+            publicHeadersPath: "cf",
+            cxxSettings: [ .unsafeFlags(["-fmodules", "-fcxx-modules"]) ]),
         .testTarget(
             name: "C++WorkshopTests",
-            dependencies: ["C++Workshop"],
+            dependencies: ["C++Workshop", "cf"],
             cxxSettings: [ .unsafeFlags(["-fmodules", "-fcxx-modules"]) ]),
     ],
     cxxLanguageStandard: .cxx1z
