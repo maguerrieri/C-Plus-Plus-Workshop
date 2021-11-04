@@ -24,8 +24,14 @@
         std::cout << "Hello from the default executor!\n";
         
         return cf::unit{};
-    }).get(); // Blocking on the completion of the future to ensure that the test doesn't end before the async block
-              // runs
+    })
+    .then([](auto unit_future) {
+        // Runs sequentially, on the same executor (in this case, the same thread that was created for the initial
+        // `async` block)
+        std::cout << "Hello from a continuation on the default executor!\n";
+        
+        return cf::unit{};
+    }).get();
 }
 
 @end
